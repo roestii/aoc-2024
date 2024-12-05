@@ -13,3 +13,8 @@ day2: src/day2.cpp string.o src/types.h
 day2_2: src/day2_2.cpp string.o vector.o src/types.h 
 	gcc -g -o day2_2 src/day2_2.cpp string.o vector.o -lc
 
+day3: src/day3.cpp src/types.h 
+	gcc -g -o day3 src/day3.cpp -lc
+
+day3_2: src/day3_2.cpp src/types.h 
+	gcc -g -o day3_2 src/day3_2.cpp -lc
