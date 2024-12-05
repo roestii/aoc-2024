@@ -18,3 +18,9 @@ day3: src/day3.cpp src/types.h
 
 day3_2: src/day3_2.cpp src/types.h 
 	gcc -g -o day3_2 src/day3_2.cpp -lc
+
+day4: src/day4.cpp src/types.h 
+	gcc -g -o day4 src/day4.cpp -lc
+
+day4_2: src/day4_2.cpp src/types.h 
+	gcc -g -o day4_2 src/day4_2.cpp -lc
