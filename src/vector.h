@@ -12,6 +12,7 @@ struct vector
 };
 
 void push(vector*, i64);
+i32 remove(vector*, u32);
 void clear(vector*);
 void initVector(vector*, u32);
 void destroyVector(vector*);

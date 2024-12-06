@@ -38,7 +38,24 @@ void push(vector* v, i64 item)
 	++v->len;
 }
 
+i32 remove(vector* v, u32 idx)
+{
+	if (idx >= v->len)
+	{
+		return -1;
+	}
 
+	if (idx < v->len - 1)
+	{
+		for (int i = idx + 1; i < v->len; ++i)
+		{
+			v->items[i - 1] = v->items[i];
+		}
+	}
+
+	--v->len;
+	return 0;
+}
 
 i32 binarySearch(i64* items, i64 needle, u32 leftIdx, u32 rightIdx) 
 {

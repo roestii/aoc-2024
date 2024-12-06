@@ -4,6 +4,9 @@ string.o: src/string.cpp src/string.h src/types.h
 vector.o: src/vector.cpp src/vector.h src/types.h
 	gcc -g -c src/vector.cpp -lc
 
+rule_vector.o: src/rule_vector.cpp src/rule_vector.h src/types.h
+	gcc -g -c src/rule_vector.cpp -lc
+
 day1: src/day1.cpp string.o vector.o src/types.h 
 	gcc -g -o day1 src/day1.cpp string.o vector.o -lc
 
@@ -24,3 +27,6 @@ day4: src/day4.cpp src/types.h
 
 day4_2: src/day4_2.cpp src/types.h 
 	gcc -g -o day4_2 src/day4_2.cpp -lc
+
+day5: src/day5.cpp string.o vector.o rule_vector.o src/types.h 
+	gcc -g -o day5 src/day5.cpp vector.o rule_vector.o string.o -lc
