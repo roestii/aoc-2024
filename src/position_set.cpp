@@ -79,9 +79,10 @@ void insert(position_set* map, position_entry entry)
 	}
 
 	push(targetBucket, entry);
+	++map->entryCount;
 }
 
-i32 get(position_set* map, u32 xPosition, u32 yPosition)
+i32 get(position_set* map, i16 xPosition, i16 yPosition)
 {
 	u32 key;
 	if (xPosition > yPosition)

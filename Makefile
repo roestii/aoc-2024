@@ -13,6 +13,9 @@ stack.o: src/stack.cpp src/stack.h src/types.h
 position_set.o: src/position_set.cpp src/position_set.h src/types.h
 	gcc -g -c src/position_set.cpp -lc
 
+character_map.o: src/character_map.cpp src/character_map.h src/types.h
+	gcc -g -c src/character_map.cpp -lc
+
 rule_vector.o: src/rule_vector.cpp src/rule_vector.h src/types.h
 	gcc -g -c src/rule_vector.cpp -lc
 
@@ -48,3 +51,6 @@ day6_2: src/day6_2.cpp position_set.o string.o src/types.h
 
 day7: src/day7.cpp queue.o string.o vector.o src/types.h 
 	gcc -g -o day7 src/day7.cpp queue.o vector.o string.o -lc -lm
+
+day8: src/day8.cpp character_map.o position_set.o string.o vector.o src/types.h 
+	gcc -g -o day8 src/day8.cpp character_map.o position_set.o vector.o string.o -lc -lm

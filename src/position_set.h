@@ -33,8 +33,8 @@ struct guard_position_set
 
 struct position_entry
 {
-	u16 xPosition;
-	u16 yPosition;
+	i16 xPosition;
+	i16 yPosition;
 };
 
 struct position_bucket
@@ -47,6 +47,7 @@ struct position_bucket
 struct position_set
 {
 	u32 len;
+	u32 entryCount;
 	position_bucket* buckets;
 };
 
