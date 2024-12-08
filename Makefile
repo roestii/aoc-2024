@@ -7,6 +7,9 @@ vector.o: src/vector.cpp src/vector.h src/types.h
 queue.o: src/queue.cpp src/queue.h src/types.h
 	gcc -g -c src/queue.cpp -lc
 
+stack.o: src/stack.cpp src/stack.h src/types.h
+	gcc -g -c src/stack.cpp -lc
+
 position_set.o: src/position_set.cpp src/position_set.h src/types.h
 	gcc -g -c src/position_set.cpp -lc
 
@@ -44,4 +47,4 @@ day6_2: src/day6_2.cpp position_set.o string.o src/types.h
 	gcc -g -o day6_2 src/day6_2.cpp position_set.o string.o -lc
 
 day7: src/day7.cpp queue.o string.o vector.o src/types.h 
-	gcc -g -o day7 src/day7.cpp queue.o vector.o string.o -lc
+	gcc -g -o day7 src/day7.cpp queue.o vector.o string.o -lc -lm

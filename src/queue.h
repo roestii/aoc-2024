@@ -6,7 +6,8 @@
 enum node_operand
 {
 	ADDITION = 0,
-	MULTIPLICATION = 1
+	MULTIPLICATION = 1,
+	CONCATENATION = 2
 };
 
 struct tree_node

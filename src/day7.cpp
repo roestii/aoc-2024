@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <math.h>
 
 #include "string.h"
 #include "vector.h"
@@ -11,15 +12,22 @@ bool produces(vector* v, queue* frontier, i64 result)
 	i64* components = v->items;
 	tree_node startNodeAdd = { components[0], 0, ADDITION };
 	tree_node startNodeMul = { components[0], 0, MULTIPLICATION };
+	tree_node startNodeConcat = { components[0], 0, CONCATENATION };
 
 	assert(push(frontier, startNodeAdd) == 0);
 	assert(push(frontier, startNodeMul) == 0);
+	assert(push(frontier, startNodeConcat) == 0);
 
 	tree_node currentItem;
 	while (pop(&currentItem, frontier) == 0)
 	{
-		if (currentItem.intermediateResult == result 
-			&& currentItem.idx == v->len - 1)
+		if (currentItem.intermediateResult > result)
+		{
+			continue;
+		}
+
+		if (currentItem.idx == v->len - 1
+			&& currentItem.intermediateResult == result)
 		{
 			return true;
 		}
@@ -30,6 +38,10 @@ bool produces(vector* v, queue* frontier, i64 result)
 			continue;
 		}
 
+		tree_node newNodeAdd;
+		tree_node newNodeMul;
+		tree_node newNodeConcat;
+
 		switch (currentItem.operand)
 		{
 			case ADDITION:
@@ -37,11 +49,9 @@ bool produces(vector* v, queue* frontier, i64 result)
 				i64 newIntermediateResult = currentItem.intermediateResult + 
 											components[newIdx];
 
-				tree_node newNodeAdd = { newIntermediateResult, newIdx, ADDITION };
-				tree_node newNodeMul = { newIntermediateResult, newIdx, MULTIPLICATION };
-
-				assert(push(frontier, newNodeAdd) == 0);
-				assert(push(frontier, newNodeMul) == 0);
+				newNodeAdd = { newIntermediateResult, newIdx, ADDITION };
+				newNodeMul = { newIntermediateResult, newIdx, MULTIPLICATION };
+				newNodeConcat = { newIntermediateResult, newIdx, CONCATENATION };
 
 				break;
 			}
@@ -50,15 +60,34 @@ bool produces(vector* v, queue* frontier, i64 result)
 				i64 newIntermediateResult = currentItem.intermediateResult *
 											components[newIdx];
 
-				tree_node newNodeAdd = { newIntermediateResult, newIdx, ADDITION };
-				tree_node newNodeMul = { newIntermediateResult, newIdx, MULTIPLICATION };
-
-				assert(push(frontier, newNodeAdd) == 0);
-				assert(push(frontier, newNodeMul) == 0);
+				newNodeAdd = { newIntermediateResult, newIdx, ADDITION };
+				newNodeMul = { newIntermediateResult, newIdx, MULTIPLICATION };
+				newNodeConcat = { newIntermediateResult, newIdx, CONCATENATION };
 
 				break;
 			}
+			case CONCATENATION:
+			{
+				u8 numberOfDigits = floor(log10(components[newIdx])) + 1;
+				i64 shiftedIntermediateResult = currentItem.intermediateResult * pow(10, numberOfDigits);
+				assert(shiftedIntermediateResult > currentItem.intermediateResult);
+				i64 newIntermediateResult = shiftedIntermediateResult + components[newIdx];
+
+				newNodeAdd = { newIntermediateResult, newIdx, ADDITION };
+				newNodeMul = { newIntermediateResult, newIdx, MULTIPLICATION };
+				newNodeConcat = { newIntermediateResult, newIdx, CONCATENATION };
+
+				break;
+			}
+			default:
+			{
+				assert(!"this should not happen...\n");
+			}
 		}
+
+		assert(push(frontier, newNodeAdd) == 0);
+		assert(push(frontier, newNodeMul) == 0);
+		assert(push(frontier, newNodeConcat) == 0);
 	}
 
 	return false;
@@ -85,7 +114,7 @@ i32 main(i32 argc, char** argv)
 	i64 validSeriesSum = 0;
 
 	queue frontier;
-	initQueue(&frontier, 10000);
+	initQueue(&frontier, 1000000);
 
 	for (;;)
 	{
@@ -112,9 +141,9 @@ i32 main(i32 argc, char** argv)
 		
 		if (produces(&components, &frontier, resultNumber))
 		{
-			printf("got valid series with result: %ld\n", resultNumber);
 			validSeriesSum += resultNumber;
 		}
+
 		clear(&components);
 		clear(&frontier);
 	}
